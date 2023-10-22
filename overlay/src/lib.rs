@@ -9,6 +9,7 @@ use copypasta::ClipboardContext;
 use imgui::{
     Context,
     FontConfig,
+    FontGlyphRanges,
     FontSource,
     Io,
 };
@@ -189,19 +190,27 @@ fn create_imgui_context(options: &OverlayOptions) -> Result<(WinitPlatform, imgu
     // on two different screens, and thus we do not need to scale this
     // value (as the scaling is handled by winit)
     let font_size = 18.0;
+    // imgui.fonts().add_font(&[FontSource::TtfData {
+    //     data: include_bytes!("../resources/Roboto-Regular.ttf"),
+    //     size_pixels: font_size,
+    //     config: Some(FontConfig {
+    //         // As imgui-glium-renderer isn't gamma-correct with
+    //         // it's font rendering, we apply an arbitrary
+    //         // multiplier to make the font a bit "heavier". With
+    //         // default imgui-glow-renderer this is unnecessary.
+    //         rasterizer_multiply: 1.5,
+    //         // Oversampling font helps improve text rendering at
+    //         // expense of larger font atlas texture.
+    //         oversample_h: 4,
+    //         oversample_v: 4,
+    //         ..FontConfig::default()
+    //     }),
+    // }]);
     imgui.fonts().add_font(&[FontSource::TtfData {
-        data: include_bytes!("../resources/Roboto-Regular.ttf"),
+        data: include_bytes!("../resources/unifont-15.1.03.otf"),
         size_pixels: font_size,
         config: Some(FontConfig {
-            // As imgui-glium-renderer isn't gamma-correct with
-            // it's font rendering, we apply an arbitrary
-            // multiplier to make the font a bit "heavier". With
-            // default imgui-glow-renderer this is unnecessary.
-            rasterizer_multiply: 1.5,
-            // Oversampling font helps improve text rendering at
-            // expense of larger font atlas texture.
-            oversample_h: 4,
-            oversample_v: 4,
+            glyph_ranges: FontGlyphRanges::from_slice(&[0x0001, 0xFFFF, 0x0000]),
             ..FontConfig::default()
         }),
     }]);
